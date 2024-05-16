@@ -1,113 +1,324 @@
-import Image from "next/image";
+'use client';
+import axios from 'axios';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [imageUrl, setImageUrl] = useState('');
+  const [textareaValue, setTextareaValue] = useState('');
+  const [topic, setTopic] = useState({});
+  const [quiz_for, setQuizFor] = useState('topic');
+  const [quiz_type, setQuizType] = useState('mcq');
+
+  const [quizzes, setQuizzes] = useState([]);
+  const [mcq, setMcq] = useState([]);
+  const [question, setQuestion] = useState('');
+  const [correctAnswer, setCorrectAnswer] = useState({});
+  const [options, setOptions] = useState([]);
+
+  const onChangeText = (event) => {
+    const text = event.target.value;
+    // replace lojens.com with "winlearner.com"
+    const newText = text.replace('lojens.com', 'winlearner.com');
+    setImageUrl(newText);
+  };
+
+  const downloadImage = () => {
+    fetch(imageUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const urlObject = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = urlObject;
+        link.download = imageUrl.split('/').pop(); // Extracts filename from URL
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setImageUrl('');
+      })
+      .catch((error) => console.error('Error downloading image:', error));
+  };
+
+  function parseQuestionText(text) {
+    const lines = text.split('\n').filter((line) => line.trim() !== '');
+    // console.log('lines:', lines);
+    const optionKeys = ['A.', 'B.', 'C.', 'D.'];
+    let question = lines[0];
+    const options = [];
+    let correctAnswer = {
+      text: '',
+      key: '',
+    };
+
+    // question no
+    const questionNoRegex = /\d/;
+    const questionNoindex = lines.findIndex((line) =>
+      line.match(questionNoRegex),
+    );
+    let questionNo = null;
+    if (questionNoindex !== -1) {
+      questionNo = lines[questionNoindex];
+      // console.log('questionNo:', questionNo);
+      // questionNo = lines[questionNoindex].replace('.', '');
+      question = lines[questionNoindex + 1];
+    }
+    // console.log('questionNo:', questionNo);
+
+    // Use regex to find the correct answer section
+    const correctAnswerRegex = /ANSWER IS/;
+    const correctAnswerIndex = lines.findIndex((line) =>
+      correctAnswerRegex.test(line),
+    );
+    if (correctAnswerIndex !== -1) {
+      let correctAnswerKey = lines[correctAnswerIndex + 1].trim();
+      let correctAnswerText = lines[correctAnswerIndex + 2].trim();
+
+      correctAnswer = { text: correctAnswerText, key: correctAnswerKey };
+    }
+
+    optionKeys.forEach((keyVal) => {
+      // find index of this keyVal in lines
+      const index = lines.findIndex((line) => line.trim().startsWith(keyVal));
+      let optionText = lines[index + 1];
+      // trim the option text
+      optionText = optionText.trim();
+      let newOption = {
+        key: keyVal,
+        text: optionText,
+      };
+      const optionIndex = options.findIndex((option) => option.key === keyVal);
+      if (optionIndex !== -1) {
+        options[optionIndex] = newOption;
+      } else {
+        options.push(newOption);
+      }
+    });
+
+    return { questionNo, question, options, correctAnswer };
+  }
+  const parseTextareaInput = () => {
+    const newQuestion = parseQuestionText(textareaValue);
+    const quizOptions = newQuestion?.options.map((option) => {
+      return {
+        option_title: option?.text,
+        is_correct:
+          option?.key == newQuestion?.correctAnswer?.key ? true : false,
+      };
+    });
+    const newQuiz = {
+      title: newQuestion?.question,
+      type: 'mcq',
+      options: quizOptions,
+    };
+    console.log('newQuiz:', newQuiz);
+
+    // Check if the question already exists in the mcq state
+    const questionExists = mcq.some(
+      (mcqItem) => mcqItem.question == newQuestion?.question,
+    );
+    if (!questionExists) {
+      setQuizzes((prevQuiz) => [...prevQuiz, newQuiz]);
+      setMcq((prevMcq) => [...prevMcq, newQuestion]);
+    }
+
+    setQuestion(newQuestion.question);
+    setCorrectAnswer(newQuestion.correctAnswer);
+    setOptions(newQuestion.options);
+  };
+
+  const handleFocus = (e) => {
+    // Your logic when the input is focused
+    // For example, you can copy the text
+    e.target.select(); // Selects the text in the input when focused
+    document.execCommand('copy'); // Copies the selected text
+  };
+
+  const handleOptionChange = (e) => {
+    // changes
+  };
+
+  const generateSlug = (text) => {
+    let slug = text.toLowerCase();
+    // Remove any character that is not a letter, number, or space
+    slug = slug.replace(/[^a-zA-Z0-9ঀ-৿০-৯\u00C0-\u024F\u1E00-\u1EFF\s]/g, '');
+    slug = slug.replace(/\s+/g, '-');
+    return slug;
+  };
+
+  const handleChangeTopic = (e) => {
+    const value = e.target.value;
+    const slug = generateSlug(value);
+    setTopic({ title: value, slug: slug });
+  };
+
+  const storeQuizHandler = () => {
+    if (quizzes?.length > 0 && topic?.title) {
+      const url = 'http://mentors.test/api/v1/create-mcq';
+      axios
+        .post(url, {
+          topic: topic,
+          quiz_for: quiz_for,
+          quiz_type: quiz_type,
+          quizzes: quizzes,
+        })
+        .then((res) => {
+          console.log('res:', res);
+          setQuizzes([]);
+        });
+    }
+  };
+
+  useEffect(() => {
+    if (textareaValue) {
+      parseTextareaInput();
+    }
+  }, [textareaValue]);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <p>Image download link here</p>
+      <input
+        type="text"
+        onChange={onChangeText}
+        value={imageUrl}
+        className=""
+        placeholder="Image link"
+      />
+
+      <p>{imageUrl}</p>
+      {imageUrl && (
+        <button
+          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+          onClick={downloadImage}
+        >
+          <svg
+            class="fill-current w-4 h-4 mr-2"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+            <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+          </svg>
+          <span>Download</span>
+        </button>
+      )}
+      {imageUrl && (
+        <Image src={imageUrl} alt="image" width={500} height={500} />
+      )}
+      <h3>Quiz add section</h3>
+      <p>Topic name</p>
+      {quizzes && quizzes?.length > 0 && topic?.title && (
+        <p>
+          <button
+            className="bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+            onClick={storeQuizHandler}
+          >
+            Save
+          </button>
+        </p>
+      )}
+      <input
+        type="text"
+        onChange={handleChangeTopic}
+        value={topic?.title}
+        className=""
+        placeholder="Topic name here"
+      />
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+      <div>
+        <p>Paste your question and options here (each on a new line)</p>
+        <textarea
+          value={textareaValue}
+          onChange={(event) => setTextareaValue(event?.target?.value)}
+          placeholder="Paste question and options here"
+          rows={10}
+          cols={50}
         />
+        {mcq &&
+          mcq?.length > 0 &&
+          mcq.map((mcqItem, index) => (
+            <div className="m-6 grid grid-cols-2 gap-1" key={index}>
+              <div className="p-4">
+                {mcqItem?.questionNo && (
+                  <h6>Question No: {mcqItem?.questionNo}</h6>
+                )}
+                <p>
+                  <input
+                    type="text"
+                    className="w-full"
+                    value={mcqItem?.question}
+                    onChange={handleOptionChange}
+                    onFocus={handleFocus}
+                  />
+                </p>
+                <ul>
+                  {mcqItem?.options.map((option, optionIndex) => (
+                    <li key={`option-${optionIndex}`}>
+                      <p>
+                        {/* focus on copy input text */}
+                        <input
+                          type="text"
+                          className="w-full"
+                          onChange={handleOptionChange}
+                          value={option?.text}
+                          onFocus={handleFocus}
+                        />
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                {mcqItem?.correctAnswer?.key && (
+                  <>
+                    <h6>Correct answer:</h6>
+                    <p>
+                      {mcqItem?.correctAnswer?.key}
+                      {mcqItem?.correctAnswer?.text}
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
+        {/* <div className="m-6 grid grid-cols-2 gap-1">
+          <div className="p-4">
+            <p>
+              <input
+                type="text"
+                className="w-full"
+                value={question}
+                onChange={handleOptionChange}
+                onFocus={handleFocus}
+              />
+            </p>
+            <ul>
+              {options.map((option, index) => (
+                <li key={index}>
+                  <p>
+                    <input
+                      type="text"
+                      className="w-full"
+                      onChange={handleOptionChange}
+                      value={option?.text}
+                      onFocus={handleFocus}
+                    />
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            {correctAnswer?.key && (
+              <>
+                <h6>Correct answer:</h6>
+                <p>
+                  {correctAnswer?.key}. {correctAnswer?.text}
+                </p>
+              </>
+            )}
+          </div>
+        </div> */}
       </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </>
   );
 }

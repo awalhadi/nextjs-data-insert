@@ -1,0 +1,152 @@
+[
+  {
+      "id": 179,
+      "state": "published",
+      "title": "মানসিক দক্ষতা",
+      "slug_id": "মানসিক-দক্ষতা",
+      "ref_attr": {
+          "study_hour": "50",
+          "meta_description": "BCS Mental Ability "
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 78,
+      "state": "published",
+      "title": "গাণিতিক যুক্তি",
+      "slug_id": "গাণিতিক-যুক্তি",
+      "ref_attr": {
+          "study_hour": "30",
+          "meta_description": "BCS, Bank Job, NTRCA Math courses, Geometry, Trigonometry, Algebra,, Mental Ability, বিন্যাস, সমাবেশ, সেট, ধারা, সূচক, লগারিদম, জ্যামিতি, ত্রিকোনমিতি, লসাগু, গসাগু, ঐকিক নিয়ম, শতকরা, লাভ ক্ষতি, সুদ কষা, মানসিক দক্ষতা, গতি ও বেগ জাতীয় সমস্যার ব্যাখ্যা ও সমাধান  \n\n"
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 94,
+      "state": "published",
+      "title": "সাধারণ বিজ্ঞান",
+      "slug_id": "সাধারণ-বিজ্ঞান",
+      "ref_attr": {
+          "study_hour": "30",
+          "meta_description": "BCS পরীক্ষার জন্য পদার্থবিজ্ঞান, রসায়ন, জীববিজ্ঞান, জ্যোতির্বিদ্যা সম্পর্কিত ধারণা, সূত্র, ব্যাখ্যা ও অনুশীলনী। "
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 87,
+      "state": "published",
+      "title": "English Grammar",
+      "slug_id": "english-grammar",
+      "ref_attr": {
+          "study_hour": "35",
+          "meta_description": "For BCS Preliminary, Written and Viva exam, English grammar rules Voice, Narration, parts of Speech, Number, Gender, Transformation of Sentences, Spelling mistakes, Appropriate Preposition, Right Form of Verbs, Phrases and Idioms and other rules, explanations and practice sets.  "
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 3,
+      "state": "published",
+      "title": "English Vocabulary — Basic",
+      "slug_id": "english-vocabulary-—-basic",
+      "ref_attr": {
+          "study_hour": "7"
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 91,
+      "state": "published",
+      "title": "English Literature",
+      "slug_id": "english-literature",
+      "ref_attr": {
+          "study_hour": "15",
+          "meta_description": "BCS Preliminary, Written and Viva Exam related English Literature topics - Renaissance, Victorian, Neo Classical, Romantic, Modern and Post Modern period literature works, authors, poets, quotes and related information and practice sets.  "
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 4,
+      "state": "published",
+      "title": "English Vocabulary — Standard",
+      "slug_id": "english-vocabulary-—-standard",
+      "ref_attr": {
+          "study_hour": "9"
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 5,
+      "state": "published",
+      "title": "English Vocabulary — Advanced",
+      "slug_id": "english-vocabulary-—-advanced",
+      "ref_attr": {
+          "study_hour": "15"
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 95,
+      "state": "published",
+      "title": "কম্পিউটার ও তথ্য প্রযুক্তি",
+      "slug_id": "কম্পিউটার-ও-তথ্য-প্রযুক্তি",
+      "ref_attr": {
+          "study_hour": "6"
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 92,
+      "state": "published",
+      "title": "বাংলাদেশ বিষয়াবলি",
+      "slug_id": "বাংলাদেশ-বিষয়াবলি",
+      "ref_attr": {
+          "study_hour": "15",
+          "meta_description": "BCS পরীক্ষার জন্য বাংলাদেশ বিষয়াবলী, ভুগোল, ইতিহাস, মুক্তিযুদ্ধ, অর্থনীতি, রাজনীতি, সরকার ও বিচার ব্যবস্থা, সংবিধান, সম্পদ, প্রশাসনিক ব্যবস্থা, বিখ্যাত ব্যক্তিত্ব ইত্যাদি সম্পর্কে তথ্য, বিবরণ ও অনুশীলনী। "
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 93,
+      "state": "published",
+      "title": "আন্তর্জাতিক বিষয়াবলি ",
+      "slug_id": "আন্তর্জাতিক-বিষয়াবলি-",
+      "ref_attr": {
+          "study_hour": "15",
+          "meta_description": "BCS, Bank Job, NTRCA International Affairs, আন্তর্জাতিক ঘটনাবলী। রাশিয়া, ইউক্রেন, চীন, আমেরিকা, ইউরো, ব্রেক্সিট, প্যালেস্টাইন, ইসরায়েল, আরব, সার্ক, Russia, USA, UK, Brexit, Arab nations, NATO, UN, UNESCO, WHO, SAARC, ASEAN, Israel, Palestine, China, Korea, Conflict"
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 96,
+      "state": "published",
+      "title": "ভূগোল, পরিবেশ ও দুর্যোগ ব্যবস্থাপনা",
+      "slug_id": "ভূগোল,-পরিবেশ-ও-দুর্যোগ-ব্যবস্থাপনা",
+      "ref_attr": {
+          "study_hour": "4"
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 97,
+      "state": "published",
+      "title": "নৈতিকতা, মূল্যবোধ ও সুশাসন",
+      "slug_id": "নৈতিকতা,-মূল্যবোধ-ও-সুশাসন",
+      "ref_attr": {
+          "study_hour": "2"
+      },
+      "ref_type": "LEARNING"
+  },
+  {
+      "id": 2,
+      "state": "published",
+      "title": "কারেন্ট এফেয়ারস — ২০২০/২০২৩",
+      "slug_id": "কারেন্ট-এফেয়ারস-—-২০২০/২০২৩",
+      "ref_attr": {
+          "study_hour": "10",
+          "meta_description": "BCS, Bank Job, NTRCA Current Affairs, সমসাময়িক ঘটনাবলি, কারেন্ট এফেয়ার্স, চলমান ঘটনাবলী, সাম্প্রতিক ঘটনাবলি, দেশ ও বিদেশের খবর"
+      },
+      "ref_type": "LEARNING"
+  }
+]
+
+
