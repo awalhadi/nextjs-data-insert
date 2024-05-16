@@ -153,7 +153,7 @@ export default function Home() {
 
   const storeQuizHandler = () => {
     if (quizzes?.length > 0 && topic?.title) {
-      const url = 'http://mentors.test/api/v1/create-mcq';
+      const url = 'https://admin.mentorslearning.com/api/v1/create-mcq';
       axios
         .post(url, {
           topic: topic,

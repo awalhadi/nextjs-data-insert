@@ -67,7 +67,7 @@ export default function Home() {
   };
 
   const storeLessonHandler = () => {
-    const url = 'http://mentors.test/api/v1/create-topic';
+    const url = 'https://admin.mentorslearning.com/api/v1/create-topic';
     axios
       .post(url, { lesson: lesson, course: course, topics: topics })
       .then((res) => {
