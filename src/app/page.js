@@ -163,7 +163,11 @@ export default function Home() {
         })
         .then((res) => {
           console.log('res:', res);
-          setQuizzes([]);
+          if (res.data.status === true) {
+            setQuizzes([]);
+            setTextareaValue('');
+            setMcq([]);
+          }
         });
     }
   };
@@ -280,44 +284,6 @@ export default function Home() {
               </div>
             </div>
           ))}
-        {/* <div className="m-6 grid grid-cols-2 gap-1">
-          <div className="p-4">
-            <p>
-              <input
-                type="text"
-                className="w-full"
-                value={question}
-                onChange={handleOptionChange}
-                onFocus={handleFocus}
-              />
-            </p>
-            <ul>
-              {options.map((option, index) => (
-                <li key={index}>
-                  <p>
-                    <input
-                      type="text"
-                      className="w-full"
-                      onChange={handleOptionChange}
-                      value={option?.text}
-                      onFocus={handleFocus}
-                    />
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            {correctAnswer?.key && (
-              <>
-                <h6>Correct answer:</h6>
-                <p>
-                  {correctAnswer?.key}. {correctAnswer?.text}
-                </p>
-              </>
-            )}
-          </div>
-        </div> */}
       </div>
     </>
   );

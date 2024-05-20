@@ -62,7 +62,10 @@ export default function Home() {
     const url = 'https://admin.mentorslearning.com/api/v1/create-lesson';
     axios.post(url, { lessons: lessons, course: course }).then((res) => {
       console.log('res:', res);
-      setLessons([]);
+      if (res.data.status === true) {
+        setLessons([]);
+        setTextareaValue('');
+      }
     });
   };
 

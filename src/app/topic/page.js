@@ -72,7 +72,10 @@ export default function Home() {
       .post(url, { lesson: lesson, course: course, topics: topics })
       .then((res) => {
         console.log('res:', res);
-        setTopics([]);
+        if (res.data.status === true) {
+          setTopics([]);
+          setTextareaValue('');
+        }
       });
   };
 
@@ -85,16 +88,6 @@ export default function Home() {
   return (
     <>
       <h3>Topic add section</h3>
-      {/* <div>
-        <label htmlFor="course">Course</label>
-        <input
-          type="text"
-          id="course"
-          name="course"
-          value={course?.title}
-          onChange={handleChangeCourse}
-        />
-      </div> */}
       <div>
         <label htmlFor="lesson">Lesson</label>
         <input
