@@ -214,16 +214,7 @@ export default function Home() {
       )}
       <h3>Quiz add section</h3>
       <p>Topic name</p>
-      {quizzes && quizzes?.length > 0 && topic?.title && (
-        <p>
-          <button
-            className="bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-            onClick={storeQuizHandler}
-          >
-            Save
-          </button>
-        </p>
-      )}
+
       <label>Title</label>
       <input
         type="text"
@@ -250,6 +241,16 @@ export default function Home() {
           rows={10}
           cols={50}
         />
+        {quizzes && quizzes?.length > 0 && topic?.title && (
+          <p>
+            <button
+              className="bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+              onClick={storeQuizHandler}
+            >
+              Save
+            </button>
+          </p>
+        )}
         {mcq &&
           mcq?.length > 0 &&
           mcq.map((mcqItem, index) => (
