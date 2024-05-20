@@ -28,6 +28,10 @@ export default function Home() {
     const slug = generateSlug(value);
     setLesson({ ...lesson, title: value, slug: slug });
   };
+  const handleChangeLessonSlug = (e) => {
+    const value = e.target.value;
+    setLesson((prevLesson) => ({ ...prevLesson, slug: value }));
+  };
 
   const filterTextItems = (items, text) =>
     items.filter((item) => !item.includes(text));
@@ -96,6 +100,16 @@ export default function Home() {
           name="lesson"
           value={lesson?.title}
           onChange={handleChangeLesson}
+        />
+      </div>
+      <div>
+        <label htmlFor="lesson">Lesson Slug</label>
+        <input
+          type="text"
+          id="lesson"
+          name="slug"
+          value={lesson?.slug}
+          onChange={handleChangeLessonSlug}
         />
       </div>
       <div>

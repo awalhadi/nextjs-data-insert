@@ -150,6 +150,10 @@ export default function Home() {
     const slug = generateSlug(value);
     setTopic({ title: value, slug: slug });
   };
+  const handleChangeTopicSlug = (e) => {
+    const value = e.target.value;
+    setTopic((prevTopic) => ({ ...prevTopic, slug: value }));
+  };
 
   const storeQuizHandler = () => {
     if (quizzes?.length > 0 && topic?.title) {
@@ -220,12 +224,21 @@ export default function Home() {
           </button>
         </p>
       )}
+      <label>Title</label>
       <input
         type="text"
         onChange={handleChangeTopic}
         value={topic?.title}
         className=""
         placeholder="Topic name here"
+      />
+      <label>Slug</label>
+      <input
+        type="text"
+        onChange={handleChangeTopicSlug}
+        value={topic?.slug}
+        className=""
+        placeholder="Topic slug"
       />
 
       <div>
